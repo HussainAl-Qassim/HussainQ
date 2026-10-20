@@ -1,0 +1,662 @@
+/* ===== صفحة قارئ الكتب ===== */
+
+:root {
+  --primary: #0e9f6e;
+  --primary-dark: #046c4e;
+  --primary-light: #31c48d;
+  --accent: #f5b81f;
+  --accent-light: #fcd34d;
+  --bg: #eef7f2;
+  --card-bg: #ffffff;
+  --text: #1c3a2e;
+  --text-muted: #587a6b;
+  --border: #d9efe4;
+  --shadow: 0 6px 24px rgba(4, 108, 78, 0.12);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* مهم جدًا: بدون هذه القاعدة تُتجاهل خاصية hidden في HTML
+   إذا كان للعنصر أي display في CSS (مثل reader-error و busy-badge) */
+[hidden] {
+  display: none !important;
+}
+
+body {
+  font-family: "Tajawal", "Segoe UI", Tahoma, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ===== شريط القارئ العلوي ===== */
+.reader-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 20px;
+  background: linear-gradient(120deg, var(--primary-dark), var(--primary));
+  color: #fff;
+  box-shadow: var(--shadow);
+  z-index: 10;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.98rem;
+  padding: 9px 18px;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: all 0.25s;
+  white-space: nowrap;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: translateX(3px);
+}
+
+.back-arrow {
+  font-size: 1.1rem;
+}
+
+.reader-title-wrap {
+  text-align: center;
+  min-width: 0;
+  flex: 1;
+}
+
+.reader-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.reader-mode-badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.18);
+  padding: 2px 12px;
+  border-radius: 50px;
+  margin-top: 2px;
+}
+
+.reader-mode-badge.solved {
+  background: var(--accent);
+  color: var(--primary-dark);
+}
+
+.reader-actions {
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s;
+}
+
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+/* ===== إطار عرض الكتاب ===== */
+.reader-frame-wrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.pdf-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #fff;
+}
+
+/* شاشة التحميل */
+.loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: var(--bg);
+  color: var(--text-muted);
+  font-weight: 700;
+  z-index: 5;
+}
+
+.spinner {
+  width: 52px;
+  height: 52px;
+  border: 5px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* رسالة الخطأ */
+.reader-error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  background: var(--bg);
+  padding: 30px;
+  z-index: 6;
+}
+
+.error-icon {
+  font-size: 4rem;
+  margin-bottom: 6px;
+}
+
+.reader-error h2 {
+  font-size: 1.5rem;
+  color: var(--primary-dark);
+}
+
+.reader-error p {
+  color: var(--text-muted);
+  max-width: 480px;
+}
+
+.error-path {
+  font-size: 0.85rem;
+  background: #fff;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 8px 16px;
+  direction: ltr;
+}
+
+.back-link {
+  margin-top: 12px;
+  display: inline-block;
+  padding: 11px 28px;
+  border-radius: 50px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.25s;
+}
+
+.back-link:hover {
+  background: var(--primary-dark);
+}
+
+/* ===== الجوال ===== */
+@media (max-width: 640px) {
+  .reader-bar {
+    flex-wrap: wrap;
+    padding: 10px 12px;
+  }
+
+  .reader-title-wrap {
+    order: 3;
+    flex-basis: 100%;
+    text-align: right;
+  }
+
+  .back-btn span:last-child {
+    display: none;
+  }
+
+  .action-btn {
+    padding: 8px 12px;
+    font-size: 0.82rem;
+  }
+}
+/* ===== أدوات التنقل في الكتاب (PDF.js) ===== */
+.pdf-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px 14px;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.tb-btn {
+  min-width: 40px;
+  height: 34px;
+  padding: 0 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--primary-dark);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tb-btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.page-indicator {
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  min-width: 70px;
+  text-align: center;
+  direction: ltr;
+}
+
+.zoom-indicator {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  min-width: 48px;
+  text-align: center;
+}
+
+.tb-sep {
+  width: 1px;
+  height: 22px;
+  background: var(--border);
+  margin: 0 4px;
+}
+
+/* ===== حاوية عرض صفحات PDF ===== */
+.pdf-container {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px;
+  gap: 16px;
+  background: #dfe9e2;
+}
+
+.pdf-page-wrap {
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+  cursor: zoom-in;
+  flex-shrink: 0;
+  max-width: 100%;
+}
+
+.pdf-page {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+.pdf-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #fff;
+}
+
+/* الشريط العلوي يبقى فوق الأدوات */
+.reader-bar {
+  position: relative;
+  z-index: 30;
+}
+
+/* ===== عرض الصفحة كصورة (الطريقة الجديدة) ===== */
+.page-box {
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 6px 26px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+/* التمركز الآمن: يسمح بالتمرير الكامل عند التكبير بدون قطع المحتوى */
+.pdf-container {
+  align-items: safe center;
+}
+
+.page-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* رقم الصفحة القابل للكتابة */
+.page-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  direction: ltr;
+}
+
+.page-indicator input {
+  width: 62px;
+  height: 34px;
+  text-align: center;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  outline: none;
+}
+
+.page-indicator input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(14, 159, 110, 0.15);
+}
+
+.page-total {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.tb-btn-text {
+  width: auto;
+  padding: 0 14px;
+  font-size: 0.88rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tb-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.tb-btn:disabled:hover {
+  background: #fff;
+  border-color: var(--border);
+  color: var(--primary-dark);
+}
+
+/* شارة "جاري تجهيز الصفحة" أثناء تحميل صفحة جديدة */
+.busy-badge {
+  position: absolute;
+  top: 14px;
+  inset-inline-start: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 18px;
+  border-radius: 50px;
+  background: rgba(4, 108, 78, 0.94);
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  z-index: 8;
+}
+
+.busy-spinner {
+  width: 16px;
+  height: 16px;
+  border: 3px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.loading-hint {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+
+/* ===== شريط الكتابة على الكتاب (Ink) ===== */
+.ink-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px 14px;
+  background: #f6fbf8;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  z-index: 20;
+}
+
+.ink-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ink-tool,
+.ink-btn {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--primary-dark);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ink-tool:hover,
+.ink-btn:hover {
+  background: #e9f9f1;
+  border-color: var(--primary);
+}
+
+.ink-tool.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(14, 159, 110, 0.35);
+}
+
+.ink-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ink-btn.ink-danger {
+  color: #b91c1c;
+}
+
+.ink-btn.ink-danger:hover {
+  background: #fef2f2;
+  border-color: #fca5a5;
+}
+
+.ink-colors {
+  gap: 6px;
+}
+
+.ink-color {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 1.5px var(--border);
+  background: var(--c);
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.ink-color:hover {
+  transform: scale(1.15);
+}
+
+.ink-color.active {
+  box-shadow: 0 0 0 2.5px var(--primary);
+  transform: scale(1.1);
+}
+
+.ink-size-wrap {
+  gap: 8px;
+}
+
+.ink-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.ink-size-wrap input[type="range"] {
+  width: 90px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.ink-size-value {
+  min-width: 28px;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+  background: #e3f6ee;
+  border-radius: 8px;
+  padding: 2px 6px;
+}
+
+.ink-saved {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  background: #e3f6ee;
+  border-radius: 50px;
+  padding: 4px 12px;
+}
+
+.ink-saved-error {
+  color: #b91c1c;
+  background: #fef2f2;
+}
+
+.ink-page-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #92400e;
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+  border-radius: 50px;
+  padding: 3px 10px;
+}
+
+.ink-select-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 7px 14px;
+  background: #eff6ff;
+  border-bottom: 1px solid #bfdbfe;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1e40af;
+  flex-wrap: wrap;
+}
+
+.ink-hint {
+  font-weight: 500;
+  color: #64748b;
+}
+
+/* صندوق الصفحة يحوي صورة الكتاب + طبقة الكتابة */
+.page-box {
+  position: relative;
+}
+
+.ink-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: default;
+}
+
+.ink-canvas.ink-active {
+  cursor: crosshair;
+}
+
+.ink-canvas.ink-marker {
+  cursor: copy;
+}
+
+.ink-canvas.ink-eraser {
+  cursor: cell;
+}
+
+.ink-canvas.ink-select {
+  cursor: crosshair;
+}
+
+/* ===== الجوال: اختصار بعض الأزرار ===== */
+@media (max-width: 640px) {
+  .tb-btn-text {
+    padding: 0 10px;
+    font-size: 0.8rem;
+  }
+
+  .page-indicator input {
+    width: 52px;
+  }
+}
