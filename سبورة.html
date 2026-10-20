@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>السبورة التفاعلية | المرحلة المتوسطة</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/whiteboard.css" />
+</head>
+<body>
+
+  <!-- الشريط العلوي -->
+  <header class="wb-nav">
+    <a href="index.html" class="wb-back">
+      <span class="wb-back-arrow">→</span>
+      <span>رجوع للمكتبة</span>
+    </a>
+    <div class="wb-title-wrap">
+      <h1 class="wb-title">✏️ السبورة التفاعلية</h1>
+      <span class="wb-subtitle">ارسم واكتب وعلّم بحرية</span>
+    </div>
+    <div class="wb-actions">
+      <button class="wb-btn" id="saveBtn" title="حفظ السبورة كصورة">⬇️ حفظ</button>
+      <button class="wb-btn danger" id="clearBtn" title="مسح كل شيء">🗑️ مسح</button>
+    </div>
+  </header>
+
+  <!-- شريط الأدوات -->
+  <div class="wb-toolbar">
+    <!-- الأدوات -->
+    <div class="tool-group" title="الأدوات">
+      <button class="tool-btn active" data-tool="pen" title="القلم">🖊️</button>
+      <button class="tool-btn" data-tool="marker" title="قلم التظليل">🖍️</button>
+      <button class="tool-btn" data-tool="line" title="خط مستقيم">📏</button>
+      <button class="tool-btn" data-tool="eraser" title="الممحاة">🧽</button>
+    </div>
+
+    <div class="tool-sep"></div>
+
+    <!-- الألوان -->
+    <div class="tool-group" title="لون الخط">
+      <button class="color-btn active" data-color="#111827" style="--c:#111827"></button>
+      <button class="color-btn" data-color="#dc2626" style="--c:#dc2626"></button>
+      <button class="color-btn" data-color="#2563eb" style="--c:#2563eb"></button>
+      <button class="color-btn" data-color="#16a34a" style="--c:#16a34a"></button>
+      <button class="color-btn" data-color="#d97706" style="--c:#d97706"></button>
+      <button class="color-btn" data-color="#db2777" style="--c:#db2777"></button>
+      <button class="color-btn" data-color="#7c3aed" style="--c:#7c3aed"></button>
+      <button class="color-btn" data-color="#f5b81f" style="--c:#f5b81f"></button>
+    </div>
+
+    <div class="tool-sep"></div>
+
+    <!-- سمك الخط -->
+    <div class="stroke-group" title="سمك الخط">
+      <label for="strokeWidth" class="stroke-label">السمك</label>
+      <input type="range" id="strokeWidth" min="1" max="40" value="4" />
+      <span class="stroke-val" id="strokeVal">4</span>
+    </div>
+
+    <div class="tool-sep"></div>
+
+    <!-- تراجع وإعادة -->
+    <div class="tool-group" title="تراجع / إعادة">
+      <button class="tool-btn" id="undoBtn" title="تراجع">↩️</button>
+      <button class="tool-btn" id="redoBtn" title="إعادة">↪️</button>
+    </div>
+  </div>
+
+  <!-- منطقة الرسم -->
+  <main class="wb-canvas-wrap">
+    <canvas id="whiteboard"></canvas>
+
+    <!-- لقطة فارغة/مرحب -->
+    <div class="wb-hint" id="wbHint">
+      <span class="wb-hint-icon">🎨</span>
+      <p>ابدأ الرسم بحرية على السبورة</p>
+    </div>
+  </main>
+
+  <footer class="wb-footer">
+    <p>السبورة التفاعلية — منصة كتب المرحلة المتوسطة 🇸🇦</p>
+  </footer>
+
+  <script src="js/whiteboard.js"></script>
+</body>
+</html>

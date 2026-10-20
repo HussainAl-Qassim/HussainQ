@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>منصة كتب المرحلة المتوسطة - السعودية 🇸🇦</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- تنبيه عند الفتح بدون خادم (file://) -->
+  <div class="server-warning" id="serverWarning" hidden>
+    <div class="warning-box">
+      <span class="warning-icon">⚠️</span>
+      <div>
+        <strong>الموقع لا يعمل بالشكل الصحيح — الخادم متوقف</strong>
+        <p>
+          لعرض الكتب داخل الموقع: أغلق هذه الصفحة، ثم افتح ملف
+          <b>«تشغيل الموقع.bat»</b> من داخل مجلد الموقع (نقرة مزدوجة).
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- الشريط العلوي -->
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">📚</span>
+        <span>المرحلة المتوسطة</span>
+      </a>
+      <div class="nav-links">
+        <a href="#grades" class="nav-link">الصفوف</a>
+        <a href="#books" class="nav-link">الكتب</a>
+        <a href="سبورة.html" class="nav-link wb-nav-link">✏️ السبورة</a>
+        <a href="#about" class="nav-link">عن الموقع</a>
+        <button type="button" class="nav-link nav-mode-btn" id="openModeBtn">
+          <span id="openModeLabel">📖 داخل الموقع</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- قسم الترحيب -->
+  <header class="hero">
+    <div class="container hero-inner">
+      <div class="hero-badge">🇸🇦 المملكة العربية السعودية - منهج 1448</div>
+      <h1 class="hero-title">جميع كتب المرحلة المتوسطة<br />في مكان واحد</h1>
+      <p class="hero-subtitle">كتب الصفوف الأول والثاني والثالث المتوسط — منهج وزارة التعليم — للقراءة والتحميل مجانًا</p>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num" id="subjectsCount">0</span><span class="stat-label">مادة</span></div>
+        <div class="stat"><span class="stat-num" id="booksCount">0</span><span class="stat-label">كتاب متاح</span></div>
+        <div class="stat"><span class="stat-num">3</span><span class="stat-label">صفوف</span></div>
+        <div class="stat"><span class="stat-num" id="solvedCount">0</span><span class="stat-label">نسخة محلولة</span></div>
+      </div>
+
+      <div class="hero-cta">
+        <a href="سبورة.html" class="cta-btn">
+          <span class="cta-icon">✏️</span>
+          <span>
+            <strong>افتح السبورة التفاعلية</strong>
+            <small>ارسم واكتب وعلّم بحرية</small>
+          </span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- اختيار الصف -->
+  <section class="container" id="grades">
+    <div class="section-head">
+      <h2 class="section-title">اختر الصف الدراسي</h2>
+      <p class="section-subtitle">اضغط على بطاقة الصف لعرض كتبه</p>
+    </div>
+    <div class="grade-cards">
+      <div class="grade-card active" data-grade="1">
+        <div class="grade-card-icon">🎒</div>
+        <div class="grade-card-info">
+          <h3>الصف الأول المتوسط</h3>
+          <p>جميع المواد - الفصل الأول</p>
+        </div>
+      </div>
+      <div class="grade-card" data-grade="2">
+        <div class="grade-card-icon">🎓</div>
+        <div class="grade-card-info">
+          <h3>الصف الثاني المتوسط</h3>
+          <p>جميع المواد - الفصل الأول</p>
+        </div>
+      </div>
+      <div class="grade-card" data-grade="3">
+        <div class="grade-card-icon">🏆</div>
+        <div class="grade-card-info">
+          <h3>الصف الثالث المتوسط</h3>
+          <p>جميع المواد - الفصل الأول</p>
+        </div>
+      </div>
+      <a href="سبورة.html" class="grade-card wb-card">
+        <div class="grade-card-icon">✏️</div>
+        <div class="grade-card-info">
+          <h3>السبورة التفاعلية</h3>
+          <p>ارسم واكتب وعلّم بحرية</p>
+        </div>
+        <span class="wb-card-arrow">←</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- قائمة الكتب -->
+  <section class="container" id="books">
+    <div class="section-head books-head">
+      <div>
+        <h2 class="section-title" id="currentGradeTitle">كتب الصف الأول المتوسط</h2>
+        <p class="section-subtitle">📖 اضغط على رقم الفصل لفتح الكتاب وقراءته</p>
+      </div>
+      <div class="search-box">
+        <input type="search" id="searchInput" placeholder="🔍 ابحث عن كتاب..." />
+      </div>
+    </div>
+    <div class="books-grid" id="booksGrid"></div>
+    <div class="no-results" id="noResults" hidden>
+      <span class="no-results-icon">😕</span>
+      <p>لا توجد كتب مطابقة لبحثك</p>
+    </div>
+
+    <p class="solved-note" id="solvedNote">🧮 النسخ المحلولة: أضف ملفات الحلول لتعمل أزرار «محلولة» في كل بطاقة (اضغط أي زر رمادي للتفاصيل).</p>
+  </section>
+
+  <!-- مشاركة الموقع على أجهزة أخرى -->
+  <section class="container" id="share">
+    <div class="share-card">
+      <div class="share-info">
+        <h2 class="share-title">📱 افتح الموقع على جهاز آخر</h2>
+        <p class="share-subtitle">
+          من الجوال أو التابلت أو أي جهاز على <b>نفس شبكة الواي فاي</b>:
+          اكتب العنوان التالي في المتصفح، أو امسح الرمز بالكاميرا.
+        </p>
+        <div class="share-addr-row">
+          <code class="share-addr" id="shareAddr" dir="ltr">…</code>
+          <button class="share-copy" id="shareCopy" type="button">📋 نسخ</button>
+        </div>
+        <p class="share-note" id="shareNote" hidden></p>
+      </div>
+      <div class="share-qr" id="shareQr" hidden>
+        <img id="shareQrImg" alt="رمز QR لفتح الموقع" />
+        <span>امسح الرمز بالجوال</span>
+      </div>
+    </div>
+
+    <!-- بطاقة الرابط العام: تظهر فقط أثناء تشغيل «مشاركة عبر الإنترنت.bat» -->
+    <div class="share-card share-public" id="sharePublic" hidden>
+      <div class="share-info">
+        <h2 class="share-title">🌍 افتح الموقع من أي شبكة في العالم</h2>
+        <p class="share-subtitle">
+          هذا الرابط العام يعمل من <b>أي جهاز وأي شبكة</b> (حتى بدون واي فاي مشترك)،
+          ما دامت أداة <b>«مشاركة عبر الإنترنت.bat»</b> تعمل على جهازك.
+        </p>
+        <div class="share-addr-row">
+          <code class="share-addr" id="publicAddr" dir="ltr">…</code>
+          <button class="share-copy" id="publicCopy" type="button">📋 نسخ</button>
+        </div>
+      </div>
+      <div class="share-qr" id="publicQr" hidden>
+        <img id="publicQrImg" alt="رمز QR للرابط العام" />
+        <span>امسح الرمز بالجوال</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- عن الموقع -->
+  <section class="about-section" id="about">
+    <div class="container">
+      <h2 class="section-title light">كيف تستخدم الموقع؟</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">١</div>
+          <h3>اختر الصف</h3>
+          <p>الصف الأول أو الثاني أو الثالث المتوسط</p>
+        </div>
+        <div class="step">
+          <div class="step-number">٢</div>
+          <h3>اختر الكتاب</h3>
+          <p>اضغط على رقم الفصل الدراسي للكتاب المطلوب</p>
+        </div>
+        <div class="step">
+          <div class="step-number">٣</div>
+          <h3>اقرأ أو حمّل</h3>
+          <p>تصفح الكتاب مباشرة أو حمّله كملف PDF للجوال</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>📚 منصة كتب المرحلة المتوسطة — جميع الكتب من وزارة التعليم السعودية</p>
+      <p class="footer-note">للأغراض التعليمية فقط · نسخة 1448هـ</p>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    /* كشف عمل الخادم + قسم مشاركة الموقع على أجهزة أخرى */
+    (async function () {
+      const box = document.getElementById("serverWarning");
+      const shareAddr = document.getElementById("shareAddr");
+      const shareNote = document.getElementById("shareNote");
+      const shareQr = document.getElementById("shareQr");
+      const shareQrImg = document.getElementById("shareQrImg");
+      const shareCopy = document.getElementById("shareCopy");
+      const sharePublic = document.getElementById("sharePublic");
+      const publicAddr = document.getElementById("publicAddr");
+      const publicCopy = document.getElementById("publicCopy");
+      const publicQr = document.getElementById("publicQr");
+      const publicQrImg = document.getElementById("publicQrImg");
+
+      /* عنوان الموقع كما هو ظاهر في متصفح هذا الجهاز */
+      const selfUrl = window.location.origin + "/index.html";
+      if (shareAddr) shareAddr.textContent = selfUrl;
+
+      function wireCopy(btn, addrEl) {
+        if (!btn) return;
+        btn.addEventListener("click", async function () {
+          const text = addrEl.textContent;
+          try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(text);
+            } else {
+              /* بديل للمتصفحات القديمة أو عند عدم توفر https */
+              const ta = document.createElement("textarea");
+              ta.value = text;
+              ta.style.position = "fixed";
+              ta.style.opacity = "0";
+              document.body.appendChild(ta);
+              ta.select();
+              document.execCommand("copy");
+              document.body.removeChild(ta);
+            }
+            btn.textContent = "✅ تم النسخ";
+          } catch (e) {
+            btn.textContent = "❌ تعذر النسخ";
+          }
+          setTimeout(function () { btn.textContent = "📋 نسخ"; }, 2000);
+        });
+      }
+      wireCopy(shareCopy, shareAddr);
+      wireCopy(publicCopy, publicAddr);
+
+      if (window.location.protocol === "file:") {
+        if (box) box.hidden = false;
+        if (shareNote) {
+          shareNote.hidden = false;
+          shareNote.textContent =
+            "شغّل الموقع أولًا من «تشغيل الموقع.bat» حتى يظهر عنوان الشبكة.";
+        }
+        return;
+      }
+
+      try {
+        const res = await fetch("__ping", { cache: "no-store" });
+        const info = await res.json();
+        if (!info.ok || !info.pymupdf) { if (box) box.hidden = false; }
+
+        if (shareAddr && Array.isArray(info.hosts) && info.hosts.length) {
+          /* العنوان الأنسب للأجهزة الأخرى = عنوان الجهاز على الشبكة */
+          const port = info.port || window.location.port || 8080;
+          const lanUrl = "http://" + info.hosts[0] + ":" + port + "/index.html";
+          shareAddr.textContent = lanUrl;
+
+          if (info.qr) {
+            shareQrImg.src = "__qr?url=" + encodeURIComponent(lanUrl);
+            shareQr.hidden = false;
+          }
+        } else if (shareNote) {
+          shareNote.hidden = false;
+          shareNote.textContent =
+            "لم يتم اكتشاف عنوان شبكة. تأكد من اتصال هذا الجهاز بالواي فاي،" +
+            " ثم افتح العنوان المعروض أعلاه من جهاز آخر على نفس الشبكة.";
+        }
+
+        /* الرابط العام (أي شبكة في العالم) إن كان نفق الإنترنت يعمل */
+        if (sharePublic && info.publicUrl) {
+          publicAddr.textContent = info.publicUrl;
+          sharePublic.hidden = false;
+          if (info.qr && publicQrImg) {
+            publicQrImg.src = "__qr?url=" + encodeURIComponent(info.publicUrl);
+            publicQr.hidden = false;
+          }
+        }
+      } catch (e) {
+        if (box) box.hidden = false;
+      }
+    })();
+  </script>
+
+  <!-- نافذة شرح إضافة النسخة المحلولة -->
+  <div class="solved-modal" id="solvedModal" hidden>
+    <div class="solved-modal-box">
+      <span class="solved-modal-icon">🧮</span>
+      <h3>النسخة المحلولة غير مضافة بعد</h3>
+      <p class="solved-modal-book" id="solvedModalName">—</p>
+
+      <p>
+        الكتب المحلولة <b>ليست ملفًا رسميًا من وزارة التعليم</b>، لذا لا يمكن تحميلها
+        تلقائيًا. لكن الموقع يدعمها جاهزة: أضف ملف الحلول من جهازك فيعمل الزر فورًا.
+      </p>
+
+      <!-- منطقة الرفع: سحب وإفلات أو اختيار ملف -->
+      <div class="solved-drop" id="solvedDrop">
+        <span class="solved-drop-icon">📥</span>
+        <p class="solved-drop-title">اسحب ملف PDF هنا</p>
+        <p class="solved-drop-sub">أو اضغط لاختيار الملف من جهازك</p>
+        <input type="file" id="solvedFile" accept="application/pdf,.pdf" hidden />
+      </div>
+
+      <p class="solved-drop-target" id="solvedDropTarget">سيُحفظ باسم: —</p>
+
+      <div class="solved-progress" id="solvedProgress" hidden>
+        <div class="solved-progress-bar"><span id="solvedProgressBar"></span></div>
+        <p class="solved-progress-text" id="solvedProgressText">جاري الرفع...</p>
+      </div>
+
+      <p class="solved-result" id="solvedResult" hidden></p>
+
+      <details class="solved-details">
+        <summary>طريقة الإضافة يدويًا (بدون رفع)</summary>
+        <ol class="solved-steps">
+          <li>
+            سمِّ ملف الحلول بالضبط:
+            <code dir="ltr" id="solvedModalFile">key-sem-solved.pdf</code>
+          </li>
+          <li>
+            ضعه داخل المجلد:
+            <code dir="ltr" id="solvedModalFolder">كتب/grade1</code>
+          </li>
+          <li>
+            أعد تحميل الصفحة — يتحول الزر الرمادي إلى
+            <b>🧮 محلولة</b> ذهبي قابل للفتح.
+          </li>
+        </ol>
+        <p class="solved-modal-hint">
+          💡 يقبل الموقع أيضًا تسميات مثل
+          <code dir="ltr">key-sem-hulul.pdf</code> أو
+          <code dir="ltr">key-sem-حلول.pdf</code> — وأي مجلد
+          <code dir="ltr">كتب/محلولة/gradeX</code>.
+        </p>
+      </details>
+
+      <button type="button" class="solved-modal-close" data-close-solved>إغلاق</button>
+    </div>
+  </div>
+
+</body>
+</html>

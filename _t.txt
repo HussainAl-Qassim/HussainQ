@@ -1,0 +1,4 @@
+app.js node-check=0 OK
+url=http://localhost:8080/%D9%83%D8%AA%D8%A8/grade1/math-1.pdf
+pdf-on-disk=True
+http-status=200

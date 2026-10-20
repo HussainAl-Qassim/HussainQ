@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>قارئ الكتب | المرحلة المتوسطة</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/reader.css" />
+</head>
+<body>
+
+  <!-- شريط القارئ العلوي -->
+  <header class="reader-bar">
+    <a href="index.html" class="back-btn">
+      <span class="back-arrow">→</span>
+      <span>رجوع للمكتبة</span>
+    </a>
+
+    <div class="reader-title-wrap">
+      <h1 class="reader-title" id="readerTitle">الكتاب</h1>
+      <span class="reader-mode-badge" id="modeBadge">📖 الفصل الأول</span>
+    </div>
+
+    <div class="reader-actions">
+      <a class="action-btn" id="downloadBtn" href="#" download title="تحميل الكتاب">
+        ⬇️ تحميل PDF
+      </a>
+      <button class="action-btn" id="fullscreenBtn" title="تكبير العرض">
+        ⛶ ملء الشاشة
+      </button>
+    </div>
+  </header>
+
+  <!-- شريط التنقل داخل الكتاب -->
+  <div class="pdf-toolbar">
+    <button class="tb-btn" id="prevBtn" title="الصفحة السابقة — ◀ أو عجلة الفأرة للأعلى">◀</button>
+    <span class="page-indicator">
+      <input type="number" id="pageNum" value="1" min="1" title="اكتب رقم الصفحة واضغط Enter" />
+      <span class="page-total">/ <span id="pageCount">0</span></span>
+    </span>
+    <button class="tb-btn" id="nextBtn" title="الصفحة التالية — ▶ أو عجلة الفأرة للأسفل">▶</button>
+
+    <div class="tb-sep"></div>
+
+    <button class="tb-btn" id="zoomOutBtn" title="تصغير">−</button>
+    <span class="zoom-indicator" id="zoomLevel">100%</span>
+    <button class="tb-btn" id="zoomInBtn" title="تكبير">+</button>
+    <button class="tb-btn tb-btn-text" id="fitBtn" title="ملء عرض الشاشة">ملء العرض</button>
+
+    <div class="tb-sep"></div>
+    <a class="tb-btn tb-btn-text" id="openBtn" href="#" target="_blank" rel="noopener" title="فتح ملف PDF الأصلي في تبويب جديد">📄 الأصل</a>
+  </div>
+  <!-- شريط أدوات القلم والكتابة على الكتاب -->
+  <div class="ink-toolbar" id="inkToolbar">
+    <span class="ink-group">
+      <button class="ink-tool active" data-tool="none" title="وضع التصفح: تحريك الصفحة بالفأرة (B)">🖐️ سحب</button>
+      <button class="ink-tool" data-tool="pen" title="قلم للكتابة والرسم (P)">🖊️ قلم</button>
+      <button class="ink-tool" data-tool="marker" title="قلم تظليل شفاف (H)">🖍️ تظليل</button>
+      <button class="ink-tool" data-tool="eraser" title="ممحاة: امسح بالمرور على الكتابة (E)">🧽 ممحاة</button>
+      <button class="ink-tool" data-tool="select" title="تحديد: اسحب إطارًا لتحديد الكتابة ثم حذفها أو نقلها (S)">⬚ تحديد</button>
+    </span>
+
+    <div class="tb-sep"></div>
+
+    <span class="ink-group ink-colors" id="inkColors">
+      <button class="ink-color active" data-color="#e11d48" style="--c:#e11d48" title="أحمر"></button>
+      <button class="ink-color" data-color="#2563eb" style="--c:#2563eb" title="أزرق"></button>
+      <button class="ink-color" data-color="#16a34a" style="--c:#16a34a" title="أخضر"></button>
+      <button class="ink-color" data-color="#f59e0b" style="--c:#f59e0b" title="برتقالي"></button>
+      <button class="ink-color" data-color="#a855f7" style="--c:#a855f7" title="بنفسجي"></button>
+      <button class="ink-color" data-color="#0f172a" style="--c:#0f172a" title="أسود"></button>
+    </span>
+
+    <span class="ink-group ink-size-wrap" id="inkSizeWrap">
+      <span class="ink-label">السمك</span>
+      <input type="range" id="inkSize" min="1" max="24" value="3" title="سُمك القلم" />
+      <span class="ink-size-value" id="inkSizeLabel">3</span>
+    </span>
+
+    <div class="tb-sep"></div>
+
+    <span class="ink-group">
+      <button class="ink-btn" id="inkUndo" title="تراجع (Ctrl+Z)" disabled>↩️ تراجع</button>
+      <button class="ink-btn" id="inkRedo" title="إعادة (Ctrl+Y)" disabled>↪️ إعادة</button>
+      <button class="ink-btn ink-danger" id="inkClearPage" title="مسح كتابة الصفحة الحالية">🗑️ الصفحة</button>
+      <button class="ink-btn ink-danger" id="inkClearAll" title="مسح كل كتابة الكتاب">🧹 الكل</button>
+    </span>
+
+    <span class="ink-saved" id="inkSaved" hidden>✓ تم الحفظ</span>
+    <span class="ink-page-badge" id="inkPageBadge" hidden title="هذه الصفحة تحتوي على كتابة">✏️</span>
+  </div>
+
+  <!-- شريط إجراءات التحديد -->
+  <div class="ink-select-bar" id="inkSelectBar" hidden>
+    <span id="inkSelectCount">تم تحديد عنصر</span>
+    <button class="ink-btn ink-danger" id="inkDeleteSel">🗑️ حذف المحدد</button>
+    <button class="ink-btn" id="inkUnselect">✖️ إلغاء التحديد</button>
+    <span class="ink-hint">💡 اسحب داخل الإطار لنقل الكتابة</span>
+  </div>
+
+
+
+  <!-- منطقة عرض الكتاب -->
+  <main class="reader-frame-wrap">
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p id="loadingText">جاري تجهيز الكتاب...</p>
+      <p class="loading-hint">المرة الأولى قد تستغرق ثانية أو اثنتين فقط</p>
+    </div>
+
+    <div class="pdf-container" id="pdfContainer"></div>
+
+    <div class="busy-badge" id="busyBadge" hidden>
+      <span class="busy-spinner"></span>
+      <span>جاري تجهيز الصفحة...</span>
+    </div>
+
+    <div class="reader-error" id="readerError" hidden>
+      <span class="error-icon">📕</span>
+      <h2>تعذر فتح الكتاب</h2>
+      <p id="errorMsg">ملف الكتاب غير موجود حاليًا.</p>
+      <p class="error-path" id="errorPath" hidden></p>
+      <a href="index.html" class="back-link">العودة للمكتبة</a>
+    </div>
+  </main>
+
+  <script src="js/ink.js"></script>
+  <script src="js/reader.js"></script>
+</body>
+</html>
